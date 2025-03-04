@@ -1,0 +1,50 @@
+{
+  "name": "react-query-lite",
+  "version": "0.0.1",
+  "description": "A lighter version of react query",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "url": "git@github.com:Creatif/creatif-ui-sdk.git"
+  },
+  "main": "build/index.js",
+  "keywords": [
+    "react-query",
+    "react-query-lite"
+  ],
+  "author": {
+    "email": "marioskrlec222@proton.me",
+    "name": "Mario Škrlec"
+  },
+  "scripts": {
+    "build": "npm run compile && npm run pretty && npm run es-lint && vite build --mode production",
+    "pretty": "prettier --loglevel='warn' --log-level='error' --write .",
+    "es-lint": "eslint --fix .",
+    "compile": "tsc --project tsconfig.json --noEmit",
+    "preview": "vite preview",
+    "npm-publish": "npm run build && npm publish"
+  },
+  "files": [
+    "build"
+  ],
+  "devDependencies": {
+    "@babel/preset-env": "7.22.7",
+    "@babel/preset-react": "7.22.5",
+    "@babel/preset-typescript": "7.22.5",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@types/node": "20.5.7",
+    "@typescript-eslint/eslint-plugin": "6.0.0",
+    "@typescript-eslint/parser": "6.0.0",
+    "eslint": "8.44.0",
+    "eslint-config-prettier": "8.8.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-react": "7.32.2",
+    "prettier": "3.0.0",
+    "rollup": "^4.22.5",
+    "terser": "5.27.0",
+    "ts-node": "10.9.1",
+    "typescript": "5.1.6",
+    "vite": "6.2.0",
+    "vite-plugin-dts": "4.3.0"
+  }
+}
