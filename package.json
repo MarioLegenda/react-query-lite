@@ -32,19 +32,24 @@
     "@babel/preset-react": "7.22.5",
     "@babel/preset-typescript": "7.22.5",
     "@rollup/plugin-commonjs": "^25.0.7",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
     "@types/node": "20.5.7",
     "@typescript-eslint/eslint-plugin": "6.0.0",
     "@typescript-eslint/parser": "6.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "8.44.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-react": "7.32.2",
+    "jsdom": "^26.0.0",
     "prettier": "3.0.0",
     "rollup": "^4.22.5",
     "terser": "5.27.0",
     "ts-node": "10.9.1",
     "typescript": "5.1.6",
     "vite": "6.2.0",
-    "vite-plugin-dts": "4.3.0"
+    "vite-plugin-dts": "4.3.0",
+    "vitest": "^3.0.7"
   }
 }
