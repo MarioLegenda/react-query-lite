@@ -1,10 +1,12 @@
 import {useQueryClient} from "./provider/useQueryClient";
 import {QueryFunction, QueryKey, UseQueryResult} from "../types/query";
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
+import {Data} from "./stateMachine/data";
 
 export function useQuery<Result, Error>(params: {
     queryKey: QueryKey,
     queryFn: QueryFunction,
+    enabled?: boolean,
 }): UseQueryResult {
     const client = useQueryClient();
     const [isLoading, setIsLoading] = useState(false);
@@ -12,17 +14,23 @@ export function useQuery<Result, Error>(params: {
     const [queryResult, setQueryResult] = useState<Result>(undefined);
     const [queryError, setQueryError] = useState<Result>(undefined);
 
-    const queryKey = params.queryKey;
+    const queryKey = JSON.stringify(params.queryKey);
     const queryFn = params.queryFn;
 
-    const handleRefetch = () => {
-        setIsLoading(true);
-        const resolvedKey = JSON.stringify(queryKey);
+    client.stateMachine.create(queryKey, new Data(params.enabled));
 
-        if (client.cache.has(resolvedKey)) {
+    const isEnabled = client.stateMachine.isEnabled(queryKey)
+
+    const handleRefetch = useCallback(() => {
+        if (!client.stateMachine.isEnabled(queryKey)) {
+            return;
+        }
+
+        setIsLoading(true);
+        if (client.cache.has(queryKey)) {
             setIsLoading(false);
             setQueryError(undefined);
-            setQueryResult(client.cache.get(resolvedKey));
+            setQueryResult(client.cache.get(queryKey));
 
             return;
         }
@@ -32,14 +40,16 @@ export function useQuery<Result, Error>(params: {
             setQueryError(undefined);
             setIsLoading(false);
 
-            client.cache.add(resolvedKey, result);
+            client.cache.add(queryKey, result);
         }).catch((e) => {
-            client.cache.remove(resolvedKey);
+            client.cache.remove(queryKey);
 
             setQueryError(e);
             setQueryResult(undefined);
         });
-    }
+    }, [
+        isEnabled,
+    ]);
 
     useEffect(() => {
         handleRefetch()
