@@ -1,7 +1,7 @@
 import React, {createContext, useContext} from 'react';
 import {QueryClient} from "../client/queryClient";
 
-export const QueryClientContext = createContext(null);
+export const QueryClientContext = createContext<QueryClient>(null);
 
 export function useQueryClient(): QueryClient | never {
     const client = useContext(QueryClientContext);

@@ -1,5 +1,10 @@
-import React, {createContext, useContext} from 'react';
+import React, {useContext, PropsWithChildren} from 'react';
 import {QueryClientContext} from "./useQueryClient";
+import {QueryClient} from "../client/queryClient";
+
+interface Props {
+    client: QueryClient;
+}
 
 export function useQueryClient() {
     const client = useContext(QueryClientContext);
@@ -11,7 +16,7 @@ export function useQueryClient() {
     return client
 }
 
-export const QueryClientProvider = ({ children, client }) => {
+export function QueryClientProvider({ children, client }: PropsWithChildren<any> & Props) {
     return (
         <QueryClientContext.Provider value={client}>
             {children}
