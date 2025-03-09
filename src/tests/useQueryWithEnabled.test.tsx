@@ -2,6 +2,7 @@ import {QueryClientProvider} from "../app/provider/QueryProvider";
 import {useQuery} from "../app/useQuery";
 import {render, waitFor, screen} from "@testing-library/react";
 import {QueryClient} from "../app/client/queryClient";
+import {useState, useEffect} from 'react';
 import { describe, it, expect, vi } from 'vitest';
 
 function EnabledComponent() {
@@ -49,6 +50,31 @@ function DisabledComponent() {
     </>
 }
 
+function ReenabledOptionComponent() {
+    const [enable, setEnabled] = useState(false);
+
+    const {data} = useQuery({
+        queryKey: ['basic success'],
+        queryFn: async () => {
+            const res = await fetch('https://google.com');
+            return await res.text();
+        },
+        enabled: enable,
+    });
+
+    useEffect(() => {
+        setTimeout(() => {
+            setEnabled(true);
+        }, 500);
+    }, []);
+
+    return <>
+        {data && <p>Success</p>}
+        {!data && <p>Nothing</p>}
+    </>
+}
+
+
 describe('Enabled query option', () => {
     it('renders as default', async () => {
         const queryClient = new QueryClient();
@@ -90,5 +116,20 @@ describe('Enabled query option', () => {
         );
 
         expect(screen.getByText('Nothing')).toBeInTheDocument()
+    });
+
+    it('renders as reenabled option', async () => {
+        const queryClient = new QueryClient();
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <ReenabledOptionComponent />
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => expect(screen.getByText('Success')).toBeInTheDocument(), {
+            timeout: 5000,
+            interval: 100,
+        });
     });
 });

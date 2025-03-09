@@ -19,7 +19,7 @@ export function useQuery<Result, Error>(params: {
 
     client.stateMachine.create(queryKey, new Data(params.enabled));
 
-    const isEnabled = client.stateMachine.isEnabled(queryKey)
+    const isEnabled = client.stateMachine.isEnabled(queryKey);
 
     const handleRefetch = useCallback(() => {
         if (!client.stateMachine.isEnabled(queryKey)) {
@@ -53,7 +53,7 @@ export function useQuery<Result, Error>(params: {
 
     useEffect(() => {
         handleRefetch()
-    }, []);
+    }, [isEnabled]);
 
     return {isLoading, data: queryResult, error: queryError, refetch: () => handleRefetch()};
 }
